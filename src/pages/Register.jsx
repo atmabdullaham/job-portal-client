@@ -1,11 +1,14 @@
 import Lottie from "lottie-react";
-import React from "react";
+import React, { useContext } from "react";
 import ReactDOM from "react-dom";
 import { useForm } from "react-hook-form";
 import registerAnimation from "../assets/register.json";
 import regAnimation from "../assets/reg.json";
+import AuthContext from "../context/authContext/AuthContext";
 
 const Register = () => {
+  const { createUser } = useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
@@ -14,6 +17,14 @@ const Register = () => {
     defaultValues: {},
   });
   const onSubmit = (data) => {
+    const { email, password } = data;
+    createUser(email, password)
+      .then((userCredential) => {
+        console.log(userCredential.user);
+      })
+      .then((error) => {
+        console.log(error.message);
+      });
     console.log(data.email, data.password, data.displayName);
   };
 
