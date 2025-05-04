@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import registerAnimation from "../assets/register.json";
 import regAnimation from "../assets/reg.json";
 import AuthContext from "../context/authContext/AuthContext";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const { createUser } = useContext(AuthContext);
@@ -110,6 +111,14 @@ const Register = () => {
 
               <input className="btn btn-neutral mt-4" type="submit" />
             </form>
+            <div className="card-actions justify-center mt-4">
+              <h2>
+                You already have an account?{" "}
+                <Link className="text-blue-500" to="/signin">
+                  Sign In
+                </Link>
+              </h2>
+            </div>
           </div>
         </div>
       </div>
