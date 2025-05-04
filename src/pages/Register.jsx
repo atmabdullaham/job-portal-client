@@ -20,7 +20,7 @@ const Register = () => {
     const { email, password } = data;
     createUser(email, password)
       .then((userCredential) => {
-        console.log(userCredential.user);
+        console.log(userCredential);
       })
       .then((error) => {
         console.log(error.message);

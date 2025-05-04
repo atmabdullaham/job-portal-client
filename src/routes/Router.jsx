@@ -8,17 +8,16 @@ const router = createBrowserRouter([
     path: "/",
     element: <MainLayout></MainLayout>,
     errorElement: <div>error</div>,
-    children:[
+    children: [
       {
         path: "/",
-        element:<Home></Home>
+        element: <Home></Home>,
       },
       {
-       path:"/register",
-       element:<Register></Register>
-      }
-    ]
+        path: "/register",
+        element: <Register></Register>,
+      },
+    ],
   },
 ]);
 export default router;
-  
