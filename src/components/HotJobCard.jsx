@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const HotJobCard = ({ job }) => {
   const {
@@ -70,12 +71,14 @@ const HotJobCard = ({ job }) => {
         </p>
       </div>
 
-      <motion.button
-        whileTap={{ scale: 0.95 }}
-        className="w-full mt-2 py-2 px-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
-      >
-        Apply Now
-      </motion.button>
+      <Link to={`/jobs/${job._id}`}>
+        <motion.button
+          whileTap={{ scale: 0.95 }}
+          className="w-full mt-2 py-2 px-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+        >
+          Apply Now
+        </motion.button>
+      </Link>
     </motion.div>
   );
 };
