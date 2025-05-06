@@ -1,13 +1,17 @@
 import Lottie from "lottie-react";
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import signInAnimation from "../assets/login.json";
 import signInAnim from "../assets/loged.json";
 import AuthContext from "../context/authContext/AuthContext";
 
 const SignIn = () => {
   const { userLogin } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state || "/";
+
   const {
     register,
     handleSubmit,
@@ -17,11 +21,14 @@ const SignIn = () => {
   });
   const onSubmit = (data) => {
     const { email, password } = data;
-    userLogin(email, password).then((userCredential) => {
-      console.log(userCredential.user).catch((error) => {
+    userLogin(email, password)
+      .then((userCredential) => {
+        console.log(userCredential.user);
+        navigate(from);
+      })
+      .catch((error) => {
         console.log(error.message);
       });
-    });
 
     console.log(data.email, data.password);
   };
