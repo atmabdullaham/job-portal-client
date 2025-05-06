@@ -1,5 +1,5 @@
 import React from "react";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const Jobdetails = () => {
@@ -68,13 +68,15 @@ const Jobdetails = () => {
         </div>
       </motion.div>
 
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
-      >
-        Apply Now
-      </motion.button>
+      <Link to={`/jobApply/${job._id}`}>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+        >
+          Apply Now
+        </motion.button>
+      </Link>
     </motion.div>
   );
 };
