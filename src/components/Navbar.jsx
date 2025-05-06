@@ -13,7 +13,7 @@ const Navbar = () => {
   const links = (
     <>
       <Link to="/">Home</Link>
-      <Link to="/">Home2</Link>
+      <Link to="/myApplications">My Applications</Link>
     </>
   );
   return (

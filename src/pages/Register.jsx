@@ -5,10 +5,11 @@ import { useForm } from "react-hook-form";
 import registerAnimation from "../assets/register.json";
 import regAnimation from "../assets/reg.json";
 import AuthContext from "../context/authContext/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
   const { createUser } = useContext(AuthContext);
+  const navigation = useNavigate();
 
   const {
     register,
@@ -22,6 +23,7 @@ const Register = () => {
     createUser(email, password)
       .then((userCredential) => {
         console.log(userCredential);
+        navigation("/");
       })
       .then((error) => {
         console.log(error.message);

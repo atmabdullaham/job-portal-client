@@ -3,9 +3,16 @@ import React from "react";
 import applicationAnimation from "../assets/application.json";
 import signInAnimation from "../assets/loged.json";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const JobApply = () => {
+  const { id } = useParams();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  //   console.log(id);
   const {
     register,
     handleSubmit,
@@ -14,6 +21,34 @@ const JobApply = () => {
 
   const onSubmit = (data) => {
     console.log(data.github, data.linkedin, data.youtube);
+    const jobApplication = {
+      job_id: id,
+      applicant_email: user?.email,
+      linkedin: data.linkedin,
+      github: data.github,
+      youtube: data.youtube,
+    };
+    fetch("http://localhost:5000/job-applications", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(jobApplication),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.insertedId) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Job Application Submitted Successfully",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          navigate("/myApplications");
+        }
+      });
+
     // Here you can send the data to your server or perform any other action
   };
   return (
