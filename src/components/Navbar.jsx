@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import AuthContext from "../context/authContext/AuthContext";
 import logo from "../assets/jobicon.png";
 
@@ -12,8 +12,15 @@ const Navbar = () => {
 
   const links = (
     <>
-      <Link to="/">Home</Link>
-      <Link to="/myApplications">My Applications</Link>
+      <NavLink className="btn" to="/">
+        Home
+      </NavLink>
+      <NavLink className="btn" to="/myApplications">
+        My Applications
+      </NavLink>
+      <NavLink className="btn" to="/addJob">
+        Add Job
+      </NavLink>
     </>
   );
   return (
@@ -39,7 +46,7 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className="menu flex gap-4 menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+            className="menu flex space-x-4 gap-4 menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
             {links}
           </ul>
