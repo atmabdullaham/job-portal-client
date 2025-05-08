@@ -3,8 +3,11 @@ import React from "react";
 import applicationAnimation from "../assets/application.json";
 import signInAnimation from "../assets/login.json";
 import { Form, useForm } from "react-hook-form";
+import useAuth from "../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const AddJob = () => {
+  const { user } = useAuth();
   const {
     register,
     handleSubmit,
@@ -12,6 +15,29 @@ const AddJob = () => {
   } = useForm({});
   const onSubmit = (data) => {
     console.log(data);
+    data.requirements = data.requirements.split("\n");
+    data.responsibilities = data.responsibilities.split("\n");
+
+    fetch("http://localhost:5000/jobs", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.insertedId) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Job Post Successfull",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        console.log(data);
+      });
   };
   return (
     <div className="hero bg-base-200 min-h-[calc(100vh-280px)]">
@@ -43,6 +69,7 @@ const AddJob = () => {
                     className="input w-full"
                     placeholder="Job title here"
                     type="text"
+                    defaultValue="MERN Stake Developer"
                   />
                   {errors.title && (
                     <p className="text-red-400">This field is required</p>
@@ -59,8 +86,9 @@ const AddJob = () => {
                   required: true,
                 })}
                 type="text"
-                className="input"
+                className="input w-full"
                 placeholder="ex: Baridhara, Dhaka"
+                defaultValue="Baridhara, Dhaka"
               />
 
               {errors.location && (
@@ -73,20 +101,39 @@ const AddJob = () => {
               <label className="label">Select Job Type</label>
               <select
                 {...register("jobType", { required: true })}
-                className="input appearance-none bg-white border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="input appearance-none bg-white border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
               >
                 <option value="" disabled selected hidden>
                   Select Job Type
                 </option>
-                <option value="female">Full-Time</option>
-                <option value="male">Hybrid</option>
-                <option value="other">Contractual</option>
-                <option value="other">Remote</option>
-                <option value="other">Part-Time</option>
-                <option value="other">Intern</option>
+                <option value="Full-Time">Full-Time</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="Contractual">Contractual</option>
+                <option value="Remote">Remote</option>
+                <option value="Part-Time">Part-Time</option>
+                <option value="Intern">Intern</option>
               </select>
 
               {errors.jobType && (
+                <p className="text-red-400">This field is required</p>
+              )}
+              {/* job-category */}
+
+              <label className="label">Job Category</label>
+              <select
+                {...register("category", { required: true })}
+                className="input appearance-none bg-white border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+              >
+                <option value="" disabled selected hidden>
+                  Select Job Category
+                </option>
+                <option value="Data-Science">Data-Science</option>
+                <option value="Web-Development">Web-Development</option>
+                <option value="Education">Education</option>
+                <option value="Technology">Technology</option>
+              </select>
+
+              {errors.category && (
                 <p className="text-red-400">This field is required</p>
               )}
 
@@ -94,12 +141,12 @@ const AddJob = () => {
               {/*Salary */}
               <div className="flex flex-col gap-2">
                 <label className="label">Salary Range</label>
-                <div className="flex flex-wrap items-center gap-4">
+                <div className="flex justify-between  items-center gap-4 ">
                   {/* Min Salary */}
                   <input
                     type="number"
                     {...register("salaryRange.min", { required: true })}
-                    className="input border rounded px-4 py-2 w-full md:w-32"
+                    className="input border  rounded px-4 py-2  md:w-32 min-w-1/3"
                     placeholder="Min (e.g. 30000)"
                     defaultValue={30000}
                   />
@@ -108,7 +155,7 @@ const AddJob = () => {
                   <input
                     type="number"
                     {...register("salaryRange.max", { required: true })}
-                    className="input border rounded px-4 py-2 w-full md:w-32"
+                    className="input border rounded px-4 py-2 w-full md:w-32 min-w-1/3"
                     placeholder="Max (e.g. 50000)"
                     defaultValue={40000}
                   />
@@ -116,7 +163,7 @@ const AddJob = () => {
                   {/* Currency Dropdown */}
                   <select
                     {...register("salaryRange.currency", { required: true })}
-                    className="input border rounded px-4 py-2 w-full md:w-28"
+                    className="input border rounded px-4 py-2 w-full md:w-28 min-w-1/4"
                   >
                     <option value="" disabled selected hidden>
                       Currency
@@ -204,7 +251,7 @@ const AddJob = () => {
                   type="url"
                   {...register("company_logo", { required: true })}
                   className="input border rounded px-4 py-2 w-full"
-                  defaultValue="https://i.ibb.co/TvvzXfq/google.png"
+                  defaultValue="https://ibb.co.com/TByHqC59"
                 />
               </div>
 
@@ -215,7 +262,7 @@ const AddJob = () => {
                   type="text"
                   {...register("hr_name", { required: true })}
                   className="input border rounded px-4 py-2 w-full"
-                  defaultValue="HR Name"
+                  defaultValue="Saber Hossain"
                 />
               </div>
 
@@ -226,7 +273,7 @@ const AddJob = () => {
                   type="email"
                   {...register("hr_email", { required: true })}
                   className="input border rounded px-4 py-2 w-full"
-                  defaultValue="(e.g. hr@email.com)"
+                  defaultValue={user.email}
                 />
               </div>
 
@@ -241,9 +288,9 @@ const AddJob = () => {
                   <option value="" disabled selected hidden>
                     Select Job Type
                   </option>
-                  <option value="active">Active</option>
-                  <option value="closed">Closed</option>
-                  <option value="on-hold">On Hold</option>
+                  <option value="Active">Active</option>
+                  <option value="Closed">Closed</option>
+                  <option value="On-Hold">On Hold</option>
                 </select>
               </div>
 

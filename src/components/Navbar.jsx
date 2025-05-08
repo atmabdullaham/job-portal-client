@@ -21,6 +21,9 @@ const Navbar = () => {
       <NavLink className="btn" to="/addJob">
         Add Job
       </NavLink>
+      <NavLink className="btn" to="/myPostedJobs">
+        My Posted Job
+      </NavLink>
     </>
   );
   return (
