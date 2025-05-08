@@ -1,8 +1,35 @@
 import React from "react";
 import { useLoaderData } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const ViewApplications = () => {
   const applications = useLoaderData();
+  const handleStatusUpdate = (e, id) => {
+    console.log(e.target.value, id);
+    const data = {
+      status: e.target.value,
+    };
+    fetch(`http://localhost:5000/job-applications/${id}`, {
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.modifiedCount) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: `Status updated to ${e.target.value}`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        console.log(data);
+      });
+  };
   return (
     <div className="overflow-x-auto">
       <table className="table">
@@ -13,7 +40,7 @@ const ViewApplications = () => {
             <th>Name</th>
             <th>Github</th>
             <th>LinkedIn</th>
-            <th>See Applications</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
@@ -27,6 +54,20 @@ const ViewApplications = () => {
               </td>
               <td>
                 <a href={application.linkedin}>Linkedin Profile</a>
+              </td>
+              <td>
+                <select
+                  onChange={(e) => {
+                    handleStatusUpdate(e, application._id);
+                  }}
+                  defaultValue={application.status || "Change Status"}
+                  className="select select-sm"
+                >
+                  <option disabled={true}>Change Status</option>
+                  <option>Under Review</option>
+                  <option>Hired</option>
+                  <option>Rejected</option>
+                </select>
               </td>
             </tr>
           ))}
