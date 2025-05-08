@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import signInAnimation from "../assets/login.json";
 import signInAnim from "../assets/loged.json";
 import AuthContext from "../context/authContext/AuthContext";
+import axios from "axios";
 
 const SignIn = () => {
   const { userLogin } = useContext(AuthContext);
@@ -19,11 +20,18 @@ const SignIn = () => {
   } = useForm({
     defaultValues: {},
   });
+
   const onSubmit = (data) => {
     const { email, password } = data;
     userLogin(email, password)
       .then((userCredential) => {
         console.log(userCredential.user);
+
+        // create user with email
+        const user = { email: userCredential.user.email };
+        axios.post(`http://localhost:5000/jwt`, user).then((data) => {
+          console.log(data);
+        });
         navigate(from);
       })
       .catch((error) => {
